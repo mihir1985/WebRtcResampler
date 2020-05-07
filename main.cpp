@@ -1,13 +1,11 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstdint>
-//采用https://github.com/mackron/dr_libs/blob/master/dr_wav.h 解码
 #define DR_WAV_IMPLEMENTATION
 
 #include "dr_wav.h"
 #include "resampler.h"
 
-//写wav文件
 void wavWrite_int16(char *filename, int16_t *buffer, size_t sampleRate, size_t totalSampleCount) {
     drwav_data_format format = {};
     format.container = drwav_container_riff;     // <-- drwav_container_riff = normal WAV files, drwav_container_w64 = Sony Wave64.
@@ -26,14 +24,12 @@ void wavWrite_int16(char *filename, int16_t *buffer, size_t sampleRate, size_t t
     }
 }
 
-//读取wav文件
 int16_t *wavRead_int16(char *filename, uint32_t *sampleRate, uint64_t *totalSampleCount) {
     unsigned int channels;
     int16_t *buffer = drwav_open_and_read_file_s16(filename, &channels, sampleRate, totalSampleCount);
     if (buffer == nullptr) {
         printf("读取wav文件失败.");
     }
-    //仅仅处理单通道音频
     if (channels != 1) {
         drwav_free(buffer);
         buffer = nullptr;
@@ -43,7 +39,6 @@ int16_t *wavRead_int16(char *filename, uint32_t *sampleRate, uint64_t *totalSamp
     return buffer;
 }
 
-//分割路径函数
 void splitpath(const char *path, char *drv, char *dir, char *name, char *ext) {
     const char *end;
     const char *p;
@@ -119,12 +114,9 @@ int16_t *resampler(int16_t *data_in, size_t totalSampleCount, size_t in_sample_r
 }
 
 void ResampleTo(char *in_file, char *out_file, size_t out_sample_rate = 16000) {
-    //音频采样率
     uint32_t sampleRate = 0;
-    //总音频采样数
     uint64_t inSampleCount = 0;
     int16_t *inBuffer = wavRead_int16(in_file, &sampleRate, &inSampleCount);
-    //如果加载成功
     if (inBuffer != nullptr) {
         int16_t *outBuffer = resampler(inBuffer, (size_t) inSampleCount, sampleRate, out_sample_rate);
         if (outBuffer != nullptr) {
@@ -138,9 +130,8 @@ void ResampleTo(char *in_file, char *out_file, size_t out_sample_rate = 16000) {
 
 int main(int argc, char *argv[]) {
     printf("WebRtc Resampler\n");
-    printf("博客:http://cpuimage.cnblogs.com/\n");
-    printf("音频插值重采样\n");
-    printf("支持采样率: 8k、16k、32k、48k、96k\n");
+    printf("http://cpuimage.cnblogs.com/\n");
+    printf("Resampler for: 8k、16k、32k、48k、96k\n");
     if (argc < 2)
         return -1;
     char *in_file = argv[1];
@@ -152,7 +143,7 @@ int main(int argc, char *argv[]) {
     splitpath(in_file, drive, dir, fname, ext);
     sprintf(out_file, "%s%s%s_out%s", drive, dir, fname, ext);
     ResampleTo(in_file, out_file, 64000);
-    printf("按任意键退出程序 \n");
+    printf("Done with resampling" \n");
     getchar();
     return 0;
 }
