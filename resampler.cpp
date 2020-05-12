@@ -751,7 +751,7 @@ void WebRtcSpl_Resample44khzTo32khz(const int32_t *In, int32_t *Out, size_t K) {
     /////////////////////////////////////////////////////////////
     // Filter operation:
     //
-    // Perform resampling (11 input samples -> 8 output samples);
+    // Perform Resampling (11 input samples -> 8 output samples);
     // process in sub blocks of size 11 samples.
     int32_t tmp;
     size_t m;
@@ -801,7 +801,7 @@ void WebRtcSpl_Resample44khzTo32khz(const int32_t *In, int32_t *Out, size_t K) {
 
 
 /*
-* This file contains resampling functions between 48 kHz and nb/wb.
+* This file contains Resampling functions between 48 kHz and nb/wb.
 * The description header can be found in signal_processing_library.h
 *
 */
@@ -811,7 +811,7 @@ void WebRtcSpl_Resample44khzTo32khz(const int32_t *In, int32_t *Out, size_t K) {
 ///// 48 kHz -> 16 kHz /////
 ////////////////////////////
 
-// 48 -> 16 resampler
+// 48 -> 16 Resampler
 void WebRtcSpl_Resample48khzTo16khz(const int16_t *in, int16_t *out,
                                     WebRtcSpl_State48khzTo16khz *state, int32_t *tmpmem) {
     ///// 48 --> 48(LP) /////
